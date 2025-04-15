@@ -9,17 +9,6 @@ jobs:
   call-tests:
     uses: ./.github/workflows/test.yml
 
-  name: CICD
-
-on:
-  workflow_dispatch:
-  push:
-  pull_request:  # <--- Добавим запуск на PR
-
-jobs:
-  call-tests:
-    uses: ./.github/workflows/test.yml
-
   add-label:
     name: Add label to PR
     needs: call-tests # Разрешаем при успешном прохождении тестов 
