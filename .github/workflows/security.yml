@@ -1,0 +1,17 @@
+name: Security check 
+on:
+  workflow_call:
+
+jobs:
+  antivirus:
+    runs-on: ubuntu-latest
+    name: Antivirus
+    steps:
+
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: '0'
+      - name: Antivirus_scan
+        uses: djdefi/gitavscan@main
+        with:
+          full: '--full'
