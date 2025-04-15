@@ -5,6 +5,22 @@ on:
   push:              # или при пуше в репозиторий
   pull_request:
 
+
+
+
+env:
+  NAME_VERSION_FILE: ${{ github.workspace }}/version/version
+  RELEASE: release
+  MINOR: minor
+  PATCH: patch
+  VERSION_UP: .github/workflows/version_update.py
+  REPO_NAME: ${{ github.event.repository.name }}
+  PR_NUMBER: ${{ github.event.number }}
+  URL_REPO: ${{ github.server_url }}/${{ github.repository }}
+  CHANGELOG_FILE: changelog.md
+
+
+
 jobs:
   call-tests:
     uses: ./.github/workflows/test.yml
