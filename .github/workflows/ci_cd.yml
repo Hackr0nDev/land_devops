@@ -45,7 +45,7 @@ jobs:
     
 
   validate_branch:  
-    needs: security
+    needs: call-antivirus
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code #Клонирование репозитория на виртуалку
