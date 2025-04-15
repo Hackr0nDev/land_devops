@@ -55,7 +55,7 @@ jobs:
         id: parse-data # парсим имя ветки :)
         uses: tj-actions/branch-names@v8
 
-      - name: Print logs 
+      - name: 
         run: |
           echo "EVENT_NAME   ${{github.event_name}}"
           echo "ACTION       ${{github.event.action}}"
