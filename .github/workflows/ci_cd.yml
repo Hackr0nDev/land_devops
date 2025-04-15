@@ -9,6 +9,10 @@ jobs:
   call-tests:
     uses: ./.github/workflows/test.yml
 
+  call-antivirus:
+    needs: call-tests
+    uses: ./.github/workflows/security.yml
+
   add-label:
     name: Add label to PR
     needs: call-tests # Разрешаем при успешном прохождении тестов 
@@ -23,8 +27,5 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           labels: test-passed
     
-  call-antivirus:
-    needs: call-tests
-    uses: ./.github/workflows/security.yml
 
 
