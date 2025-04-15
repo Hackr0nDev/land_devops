@@ -24,6 +24,7 @@ jobs:
           labels: test-passed
     
   call-antivirus:
+    needs: call-tests
     uses: ./.github/workflows/security.yml
 
 
