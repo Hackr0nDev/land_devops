@@ -1,0 +1,9 @@
+name: Tests
+
+on: push
+
+jobs:
+  runs-on: ubuntu-latest
+  steps:
+    - name: Get repository code #нужно скопировать код на виртуалку гитхаба 
+      
