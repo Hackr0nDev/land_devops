@@ -44,4 +44,15 @@ jobs:
           labels: test-passed
     
 
+  validate_branch:  
+    needs: security
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code #Клонирование репозитория на виртуалку
+        uses: actions/checkout@v2
+
+      - name: Parse branch name
+        id: parse-data # парсим имя ветки :)
+        uses: tj-actions/branch-names@v8
+
 
