@@ -1,5 +1,9 @@
 name: CICD
 
-on: workflow_dispatch
+on:
+  workflow_dispatch: # запуск вручную через GitHub UI
+  push:              # или при пуше в репозиторий
 
-jobs: 
+jobs:
+  call-tests:
+    uses: ./.github/workflows/test.yml

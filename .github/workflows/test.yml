@@ -1,9 +1,20 @@
 name: Tests
 
-on: push
+on:
+  workflow_call #Тест вызываеться другим yml файлом (ci_cd.yml)
 
 jobs:
-  runs-on: ubuntu-latest
-  steps:
-    - name: Get repository code #нужно скопировать код на виртуалку гитхаба 
-      
+  Test-1:
+    name: Test-1
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run test
+        run: |
+          echo "First test run"
+  Test-2:
+    name: Test-2
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run test
+        run: |
+          echo "Second test run"
