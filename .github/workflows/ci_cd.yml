@@ -32,7 +32,6 @@ jobs:
     uses: ./.github/workflows/security.yml
 
     
-
   validate_branch:  
     needs: call-antivirus
     runs-on: self-hosted
