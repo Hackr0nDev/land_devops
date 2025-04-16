@@ -35,7 +35,7 @@ jobs:
     name: Add label to PR
     needs: call-tests # Разрешаем при успешном прохождении тестов 
     if: ${{ github.event_name == 'pull_request' }}
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     permissions:
       pull-requests: write #Даем права на запись 
     steps:
@@ -48,7 +48,7 @@ jobs:
 
   validate_branch:  
     needs: call-antivirus
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Checkout code #Клонирование репозитория на виртуалку
         uses: actions/checkout@v2
@@ -68,7 +68,7 @@ jobs:
           echo "DEFAULT_BRANCH  ${{steps.parse-data.outputs.default_branch}}"
 
   update-version:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: validate_branch
     outputs:
       tag: ${{steps.output-tag.outputs.TAG_MSG}}
