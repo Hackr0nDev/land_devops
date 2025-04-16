@@ -3,14 +3,38 @@ on:
   workflow_call:
 
 jobs:
-  FakeAntivirus:
-    name: FakeAntivirus
+  security-check:
+    name: Security and Lint Check
     runs-on: self-hosted
+    permissions:
+      pull-requests: write
+
     steps:
-      - name: run FakeAntivirus 
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run ESLint
+        run: npx eslint ./js --ext .js
+
+      - name: Run FakeAntivirus 
         run: |
           echo "Security test passed!"
 
+      - name: Add sec-passed label to PR
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          labels: sec-passed
 #jobs:
 #  antivirus:
 #    runs-on: self-hosted
