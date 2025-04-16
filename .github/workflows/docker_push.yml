@@ -11,7 +11,7 @@ env:
 jobs:
   docker-push:
     name: Docker push job
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     env:
       tag: ${{ inputs.update_tag }}
     steps:
