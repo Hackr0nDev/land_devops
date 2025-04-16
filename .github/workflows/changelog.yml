@@ -1,0 +1,63 @@
+name: Log changes
+on:
+  workflow_call:
+    inputs:
+      update_tag:
+        type: string
+        required: true
+        description: "update version tag"
+
+
+env:
+  RELEASE_BRANCH: release
+  CHANGELOG_FILE: changelog.md
+
+
+jobs:
+  changelog:
+    runs-on: self-hosted
+    steps:
+      - name: Сheckout on [${{env.RELEASE_BRANCH}}]
+        uses: actions/checkout@v2
+
+      - name: Git pull
+        run: |
+          git pull
+
+      - name: Update [${{env.CHANGELOG_FILE}}]
+        run: |
+          echo "${{inputs.update_tag}} $(date +"%Y.%m.%d") — updated from ${{ github.event.pull_request.head.ref }}" >> ${{env.CHANGELOG_FILE}} 
+          echo "===" >> ${{env.CHANGELOG_FILE}} 
+
+      - name: Setup git config
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
+      - name: Commit and push changes
+        run: |
+          git add .
+          git commit -m "Update ${CHANGELOG_FILE}"
+          git push origin ${{env.RELEASE_BRANCH}}
+
+      - name: Add to artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{env.CHANGELOG_FILE}}
+          path: ${{env.CHANGELOG_FILE}}
+  
+
+  add-label:
+    if: ${{ github.event_name == 'pull_request' }}
+    needs: changelog
+    runs-on: self-hosted
+    permissions:
+      pull-requests: write
+      issues: write
+      contents: write
+
+    steps:
+      - name: Add version label to PR
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          labels: changelog
