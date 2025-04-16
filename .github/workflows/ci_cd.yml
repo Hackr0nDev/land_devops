@@ -108,10 +108,15 @@ jobs:
           git commit -m "Update version"
           git push origin ${RELEASE}
 
-      - name: Create and push git tag
-        run: |
-          TAG=${{ steps.output-tag.outputs.TAG_MSG }}
-          echo "Creating tag: $TAG"
-          git tag $TAG
-          git push origin $TAG
-
+        add-label:
+    if: ${{ github.event_name == 'pull_request' }}
+    needs: update-version
+    runs-on: self-hosted
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Add version label to PR
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          labels: ${{ needs.update-version.outputs.tag }}
