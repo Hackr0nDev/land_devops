@@ -108,3 +108,25 @@ jobs:
           git commit -m "Update version"
           git push origin ${RELEASE}
 
+  add-label:
+    if: ${{ github.event_name == 'pull_request' }}
+    needs: update-version
+    runs-on: self-hosted
+    permissions:
+      pull-requests: write
+      issues: write
+      contents: write
+
+    steps:
+      - name: Add version label to PR
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          labels: ${{ needs.update-version.outputs.tag }}
+
+  changelog:
+    needs: update-version
+    uses: ./.github/workflows/changelog.yml
+    with:
+      update_tag: ${{needs.update-version.outputs.tag}}
+
