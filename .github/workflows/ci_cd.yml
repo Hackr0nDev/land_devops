@@ -126,7 +126,7 @@ jobs:
 
   changelog:
     needs: update-version
-    uses: ./.github/workflows/log_changes.yml@release
+    uses: ./.github/workflows/changelog.yml
     with:
       update_tag: ${{needs.update-version.outputs.tag}}
 
