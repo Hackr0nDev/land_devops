@@ -132,7 +132,7 @@ jobs:
 
 
   docker_push:
-    needs: update-version
+#    needs: update-version
     uses: ./.github/workflows/docker_push.yml
     secrets: inherit
     with:
