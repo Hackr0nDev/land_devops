@@ -21,6 +21,7 @@ jobs:
 
   add-label:
     name: Add label to PR
+    needs: [Test-1, Test-2]
     if: ${{ github.event_name == 'pull_request' }}
     runs-on: self-hosted
     permissions:
