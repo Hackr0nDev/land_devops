@@ -132,7 +132,7 @@ jobs:
 
 
   docker_push:
-    needs: add-label-version_update
+    needs: [add-label-version_update, update-version]
     uses: ./.github/workflows/docker_push.yml
     secrets: inherit
     with:
