@@ -46,7 +46,7 @@ jobs:
             <b>Проект</b> : <code>${{ env.REPO_NAME }}</code>
             <b>Версия</b> : <code>${{ inputs.update_tag }}</code>
             <b>Дата</b>: <code>${{ steps.current-time.outputs.formattedTime }}</code>
-            <b>Автор</b>: <a href="https://github.com/Y-Sulphuris">Y-Sulphuris</a> (<a href="https://hub.docker.com/repositories/${{ secrets.DOCKER_HUB_LOGIN }}">${{ secrets.DOCKER_HUB_LOGIN }}</a>)
+            <b>Автор</b>: <a href="https://github.com/Hackr0nDev">Hackr0nDev</a> (<a href="https://hub.docker.com/repositories/${{ secrets.DOCKER_HUB_LOGIN }}">${{ secrets.DOCKER_HUB_LOGIN }}</a>)
             
             Информация о Git репозитории
             <b>Pull request</b> : <a href="${{env.URL_REPO}}/pull/${{ env.PR_NUMBER }}">${{ env.PR_NUMBER }}</a>
