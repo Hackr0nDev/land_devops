@@ -139,7 +139,7 @@ jobs:
       update_tag: ${{needs.update-version.outputs.tag}}
 
   telegram_notify:
-    needs: add-label-version_update
+    needs: docker_push
     uses: ./.github/workflows/telegram_notify.yml
     secrets: inherit
     with:
