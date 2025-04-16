@@ -31,21 +31,7 @@ jobs:
     needs: call-tests
     uses: ./.github/workflows/security.yml
 
-  add-label:
-    name: Add label to PR
-    needs: call-tests # Разрешаем при успешном прохождении тестов 
-    if: ${{ github.event_name == 'pull_request' }}
-    runs-on: self-hosted
-    permissions:
-      pull-requests: write #Даем права на запись 
-    steps:
-      - name: Add label
-        uses: actions-ecosystem/action-add-labels@v1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          labels: test-passed
     
-
   validate_branch:  
     needs: call-antivirus
     runs-on: self-hosted
