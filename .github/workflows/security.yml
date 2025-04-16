@@ -5,7 +5,7 @@ on:
 jobs:
   lint-check:
     name: Lint Check
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -25,7 +25,7 @@ jobs:
 
   security-test:
     name: Security Test
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Run FakeAntivirus
         run: |
@@ -35,7 +35,7 @@ jobs:
   add-label:
     if: ${{ github.event_name == 'pull_request' }}
     needs: [lint-check, security-test]
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     permissions:
       pull-requests: write
       issues: write
@@ -50,7 +50,7 @@ jobs:
 
 
 #  antivirus:
-#    runs-on: ubuntu-latest
+#    runs-on: self-hosted
 #    name: Antivirus
 #    steps:
 #

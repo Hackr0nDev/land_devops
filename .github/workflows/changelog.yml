@@ -15,7 +15,7 @@ env:
 
 jobs:
   changelog:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Сheckout on [${{env.RELEASE_BRANCH}}]
         uses: actions/checkout@v2
@@ -49,7 +49,7 @@ jobs:
   add-label:
     if: ${{ github.event_name == 'pull_request' }}
     needs: changelog
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     permissions:
       pull-requests: write
       issues: write
