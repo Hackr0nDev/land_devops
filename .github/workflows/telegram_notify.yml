@@ -49,8 +49,8 @@ jobs:
             <b>Автор</b>: <a href="https://github.com/Y-Sulphuris">Y-Sulphuris</a> (<a href="https://hub.docker.com/repositories/${{ secrets.DOCKER_HUB_LOGIN }}">${{ secrets.DOCKER_HUB_LOGIN }}</a>)
             
             Информация о Git репозитории
-          <b>Pull request</b> : <a href="${{env.URL_REPO}}/pull/${{ env.PR_NUMBER }}">${{ env.PR_NUMBER }}</a>
-          <b>Тег</b>: <a href="${{env.URL_REPO}}/releases/tag/v${{inputs.update_tag}}">${{inputs.update_tag}}</a>
+            <b>Pull request</b> : <a href="${{env.URL_REPO}}/pull/${{ env.PR_NUMBER }}">${{ env.PR_NUMBER }}</a>
+            <b>Тег</b>: <a href="${{env.URL_REPO}}/releases/tag/v${{inputs.update_tag}}">${{inputs.update_tag}}</a>
             
             Информация о Docker репозитории
             <b>Название</b>: <a href="https://hub.docker.com/repository/docker/${{ secrets.DOCKER_HUB_LOGIN }}/${{ env.REPO_NAME }}/general">${{ env.REPO_NAME }}</a>
