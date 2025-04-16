@@ -108,7 +108,7 @@ jobs:
           git commit -m "Update version"
           git push origin ${RELEASE}
 
-        add-label:
+  add-label:
     if: ${{ github.event_name == 'pull_request' }}
     needs: update-version
     runs-on: self-hosted
