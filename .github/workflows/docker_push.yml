@@ -13,9 +13,9 @@ jobs:
     name: Docker push job
     runs-on: ubuntu-latest
     env:
-      tag: ${{inputs.update_tag}}
+      tag: ${{ inputs.update_tag }}
     steps:
-      - name: Сheckout on [${{env.RELEASE_BRANCH}}]
+      - name: Сheckout on [${{ env.RELEASE_BRANCH }}]
         uses: actions/checkout@v3
 
       - name: Release info
@@ -53,6 +53,10 @@ jobs:
           -d "$JSON_DATA" \
           "https://hub.docker.com/v2/repositories/${{ secrets.DOCKER_HUB_LOGIN }}/${{ env.REPO_NAME }}/"
 
+  add-dockerhub-label:
+    needs: docker-push
+    runs-on: ubuntu-latest
+    steps:
       - name: Add dockerhub label
         uses: actions/github-script@v7
         with:
