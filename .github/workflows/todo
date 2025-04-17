@@ -1,6 +1,5 @@
 =====
 FIX:
-changelog label PR fix version (changelog-  ->  changelog-v1.2.3)
 telegram label PR add 
 ===
 7) Deploy to PROD
