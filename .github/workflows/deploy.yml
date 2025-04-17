@@ -41,7 +41,7 @@ jobs:
         run: |
           docker ps -a
           docker image ls
-          docker-compose -f docker-compose.yml --env-file "prod.env" up -d
+          docker compose -f docker-compose.yml --env-file "prod.env" up -d
 
       - name: Add PROD label to PR/Issue
         uses: actions/github-script@v7
