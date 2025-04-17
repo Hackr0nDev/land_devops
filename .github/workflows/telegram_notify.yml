@@ -42,7 +42,7 @@ jobs:
           format: html
           document: ${{env.CHANGELOG_FILE}}
           message: |
-            Обновление обновление обновление
+            Обновление 
             <b>Проект</b> : <code>${{ env.REPO_NAME }}</code>
             <b>Версия</b> : <code>${{ inputs.update_tag }}</code>
             <b>Дата</b>: <code>${{ steps.current-time.outputs.formattedTime }}</code>
