@@ -151,3 +151,15 @@ jobs:
     secrets: inherit
     with:
       update_tag: ${{needs.update-version.outputs.tag}}
+
+
+
+
+ release:
+    needs: [deploy, update-version]
+    uses: ./.github/workflows/release.yml
+    secrets: inherit
+    with:
+      update_tag: ${{needs.update-version.outputs.tag}}
+
+
