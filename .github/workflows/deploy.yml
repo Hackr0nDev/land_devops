@@ -1,0 +1,59 @@
+name: Deploy
+on:
+  workflow_call:
+    inputs:
+      update_tag:
+        type: string
+        required: true
+        description: "update version tag"
+
+env:
+  REPO_NAME: ${{ github.event.repository.name }}
+  IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:v${{ inputs.update_tag }}
+
+jobs:
+  mkmatrix:
+    runs-on: self-hosted
+    strategy:
+      matrix:
+        environment: [dev, test, stage]
+    steps:
+      - name: Deploy to stands
+        run: echo "start on ${{ matrix.environment }}"
+
+  deploy:
+    name: PROD
+    environment: prod
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Create prod.env
+        run: |
+          echo "VERSION=${{ inputs.update_tag }}" > prod.env
+          echo "CONTAINER_NAME=${{ env.REPO_NAME }}" >> prod.env
+          echo "DOCKER_HUB_IMAGE=${{ env.IMAGE_NAME }}" >> prod.env
+
+      - name: Install Docker Compose CLI plugin
+        run: |
+          mkdir -p ~/.docker/cli-plugins
+          COMPOSE_VERSION="v2.16.0"
+          curl -SL "https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-linux-$(uname -m)" -o ~/.docker/cli-plugins/docker-compose
+          chmod +x ~/.docker/cli-plugins/docker-compose
+
+      - name: Run Docker Compose
+        run: |
+          docker compose -f docker-compose.yml --env-file "prod.env" up -d
+
+      - name: Add PROD label to PR/Issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.addLabels({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: ['PROD']
+            })
+

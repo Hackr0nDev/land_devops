@@ -108,3 +108,53 @@ jobs:
           git commit -m "Update version"
           git push origin ${RELEASE}
 
+  add-label-version_update:
+    if: ${{ github.event_name == 'pull_request' }}
+    needs: update-version
+    runs-on: self-hosted
+    permissions:
+      pull-requests: write
+      issues: write
+      contents: write
+
+    steps:
+      - name: Add version label to PR
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          labels: ${{ needs.update-version.outputs.tag }}
+
+  changelog:
+    needs: [add-label-version_update, update-version]
+    uses: ./.github/workflows/changelog.yml
+    with:
+      update_tag: ${{needs.update-version.outputs.tag}}
+
+
+  docker_push:
+    needs: [add-label-version_update, update-version]
+    uses: ./.github/workflows/docker_push.yml
+    secrets: inherit
+    with:
+      update_tag: ${{ needs['update-version'].outputs.tag }}
+
+  telegram_notify:
+    needs: [docker_push, changelog, update-version]
+    uses: ./.github/workflows/telegram_notify.yml
+    secrets: inherit
+    with:
+      update_tag: ${{ needs['update-version'].outputs.tag }}
+
+  deploy:
+    needs: [docker_push, update-version]
+    uses: ./.github/workflows/deploy.yml
+    secrets: inherit
+    with:
+      update_tag: ${{ needs.update-version.outputs.tag }}
+
+  release:
+    needs: [deploy, update-version]
+    uses: ./.github/workflows/release.yml
+    secrets: inherit
+    with:
+      update_tag: ${{ needs.update-version.outputs.tag }}
