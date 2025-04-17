@@ -6,43 +6,45 @@ on:
         type: string
         required: true
         description: "update version tag"
+
 env:
   REPO_NAME: ${{ github.event.repository.name }}
-  IMAGE_NAME: ${{secrets.DOCKER_USERNAME}}/${{ github.event.repository.name }}:v${{inputs.update_tag}}
+  IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:v${{ inputs.update_tag }}
+
 jobs:
   mkmatrix:
     runs-on: self-hosted
     strategy:
       matrix:
-        environment: [dev,test,stage]
+        environment: [dev, test, stage]
     steps:
       - name: Deploy to stands
-        run: echo "start on ${{matrix.environment}}"
+        run: echo "start on ${{ matrix.environment }}"
 
   deploy:
     name: PROD
     environment: prod
     runs-on: self-hosted
     steps:
-      - name: Сheckout on [${{env.RELEASE}}]
+      - name: Checkout code
         uses: actions/checkout@v3
 
-
-      - name: Create .ENV
-        shell: powershell
+      - name: Create prod.env
+        # По умолчанию shell — Bash на Linux‑runner’е
         run: |
-          New-Item "prod.env" -ItemType file -Force
-          Add-Content "prod.env" "VERSION=${{ inputs.update_tag }}"
-          Add-Content "prod.env" "CONTAINER_NAME=${{ env.REPO_NAME }}"
-          Add-Content "prod.env" "DOCKER_HUB_IMAGE = ${{ env.IMAGE_NAME }}"
+          # создаём файл и записываем переменные
+          echo "VERSION=${{ inputs.update_tag }}" > prod.env
+          echo "CONTAINER_NAME=${{ env.REPO_NAME }}" >> prod.env
+          echo "DOCKER_HUB_IMAGE=${{ env.IMAGE_NAME }}" >> prod.env
 
       - name: Run DockerImage
         run: |
-          docker ps -a 
+          docker ps -a
           docker image ls
-          docker-compose -f docker-compose.yml --env-file "prod.env" up -d 
+          docker-compose -f docker-compose.yml --env-file "prod.env" up -d
 
-      - uses: actions/github-script@v7
+      - name: Add PROD label to PR/Issue
+        uses: actions/github-script@v7
         with:
           script: |
             github.rest.issues.addLabels({
@@ -51,3 +53,4 @@ jobs:
               repo: context.repo.repo,
               labels: ['PROD']
             })
+
