@@ -125,7 +125,7 @@ jobs:
           labels: ${{ needs.update-version.outputs.tag }}
 
   changelog:
-    needs: [add-label-version_update, version_update]
+    needs: [add-label-version_update, update-version]
     uses: ./.github/workflows/changelog.yml
     with:
       update_tag: ${{needs.update-version.outputs.tag}}
