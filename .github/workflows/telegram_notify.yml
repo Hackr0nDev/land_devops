@@ -42,7 +42,7 @@ jobs:
           format: html
           document: ${{env.CHANGELOG_FILE}}
           message: |
-            Обновление обновление обновление
+            Обновление 
             <b>Проект</b> : <code>${{ env.REPO_NAME }}</code>
             <b>Версия</b> : <code>${{ inputs.update_tag }}</code>
             <b>Дата</b>: <code>${{ steps.current-time.outputs.formattedTime }}</code>
@@ -56,3 +56,18 @@ jobs:
             <b>Название</b>: <a href="https://hub.docker.com/repository/docker/${{ secrets.DOCKER_HUB_LOGIN }}/${{ env.REPO_NAME }}/general">${{ env.REPO_NAME }}</a>
             <b>Тег</b>: <a href="https://hub.docker.com/repository/docker/${{ secrets.DOCKER_HUB_LOGIN }}/${{ env.REPO_NAME }}/tags/v${{inputs.update_tag}}">${{inputs.update_tag}}</a>
             <b>Полное имя</b>:  <a href="https://hub.docker.com/repository/docker/${{ secrets.DOCKER_HUB_LOGIN }}/${{ env.REPO_NAME }}/tags">${{ secrets.DOCKER_HUB_LOGIN }}/${{ env.REPO_NAME }}:v${{inputs.update_tag}}</a>
+
+  add-label-telegram:
+    name: Add label to PR
+    needs: telegram_notify
+    if: ${{ github.event_name == 'pull_request' }}
+    runs-on: self-hosted
+    permissions:
+      pull-requests: write #Даем права на запись 
+    steps:
+      - name: Add label
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          labels: telegram-pass
+

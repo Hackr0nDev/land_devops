@@ -24,12 +24,17 @@ jobs:
         run: npx eslint ./js --ext .js
 
   security-test:
-    name: Security Test
     runs-on: self-hosted
+    name: Antivirus
     steps:
-      - name: Run FakeAntivirus
-        run: |
-          echo "Security test passed!"
+
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: '-1'
+      - name: Antivirus_scan
+        uses: djdefi/gitavscan@main
+        with:
+          full: '--full'
 
 
   add-label:
