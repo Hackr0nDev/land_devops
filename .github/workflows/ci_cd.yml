@@ -145,4 +145,10 @@ jobs:
     with:
       update_tag: ${{ needs['update-version'].outputs.tag }}
 
+  deploy:
+      needs: [docker_push, update-version]
+      uses: ./.github/workflows/deploy.yml
+      secrets: inherit
+      with:
+      update_tag: ${{ needs['update-version'].outputs.tag }}
 
