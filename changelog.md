@@ -37,3 +37,5 @@
 ===
  2025.04.17 — updated from feature
 ===
+1.30.0 2025.04.17 — updated from feature
+===
